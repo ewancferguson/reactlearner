@@ -6,6 +6,7 @@ import { imageService } from "../services/ImageService";
 import { Image } from "../models/Image";
 import { weatherService } from "../services/WeatherService";
 import { Weather } from "../models/Weather";
+import { ToDoModal } from "../components/ToDoModal";
 
 export default function HomePage() {
   const [quote, setQuote] = useState<Quote | null>(null);
@@ -111,6 +112,10 @@ export default function HomePage() {
           <p>Loading quote...</p>
         )}
       </div>
+      <div className="d-flex align-items-center justify-content-center">
+        <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#todoModal">Open ToDo List</button>
+      </div>
+      <ToDoModal />
     </div>
   );
 }
