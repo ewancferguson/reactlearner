@@ -77,17 +77,29 @@ export default function HomePage() {
           <p>Loading weather...</p>
         )}
       </div>
-
       <div>
         {weather ? (
           <h5 className="text-center text-white text-shadow">
             {weather.date.toLocaleDateString()}
+            
           </h5>
         ) : (
-          <p>Loading weather description...</p>
+          <p>Loading weather date...</p>
         )}
       </div>
-
+      <div>
+        {weather ? (
+          <h5 className="text-center text-white text-shadow">
+            {weather.date.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+            
+          </h5>
+        ) : (
+          <p>Loading weather date...</p>
+        )}
+      </div>
       <div className="d-flex align-items-center justify-content-center text-white text-center text-shadow">
         {quote ? (
           <div>
