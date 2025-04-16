@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import Pop from "../utils/Pop";
 import { quoteService } from "../services/QuoteService";
 import { Quote } from "../models/Quote";
+import { imageService } from "../services/ImageService";
+import { Image } from "../models/Image";
 
 export default function HomePage() {
-  const [count, setCount] = useState(0);
   const [quote, setQuote] = useState<Quote | null>(null);
+  const [image, setImage] = useState<Image | null>(null);
 
   useEffect(() => {
     getQuote();
+    fetchImage();
   }, []);
 
   async function getQuote() {
@@ -21,19 +24,35 @@ export default function HomePage() {
     }
   }
 
-  return (
+  async function fetchImage() {
+    try {
+      const activeImage: Image = await imageService.fetchImage();
+      console.log("Fetched Image:", activeImage);
+      setImage(activeImage);
+    } catch (error: any) {
+      Pop.error(error);
+    }
+  }
 
-  <div>
-    {quote ? (
-      <div>
-      <p>{quote.quote}</p>
-      <p>{quote.author}</p>
-      <p>{quote.source}</p>
-      </div>
+  return (
+    <div
+      className="vh-100 d-flex align-items-center justify-content-center text-white text-center"
+      style={{
+        backgroundImage: `url(${image?.imgUrls.full})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      {quote ? (
+        <div className="text-dark">
+          <p className="fs-3 fw-bold text-shadow">{quote.quote}</p>
+          <p className="fs-5">— {quote.author}</p>
+          {quote.source && <p className="fs-6 fst-italic">Source: {quote.source}</p>}
+        </div>
       ) : (
-      <p>Loading quote...</p>
+        <p>Loading quote...</p>
       )}
-      </div>
-  
+    </div>
   );
 }
