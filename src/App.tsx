@@ -6,7 +6,7 @@ export function App() {
   return (
     <div className="App" id="app">
       <header>
-        
+        <Navbar />
       </header>
 
       <main>

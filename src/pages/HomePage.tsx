@@ -7,17 +7,21 @@ import { Image } from "../models/Image";
 import { weatherService } from "../services/WeatherService";
 import { Weather } from "../models/Weather";
 import { ToDoModal } from "../components/ToDoModal";
+import { AppState } from "../AppState";
+import { Account } from "../models/Account";
 
 export default function HomePage() {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [image, setImage] = useState<Image | null>(null);
   const [weather, setWeather] = useState<Weather | null>(null);
+  const [account, setAccount] = useState<Account | null>(null);
   const [isCelsius, setIsCelsius] = useState(true);
 
   useEffect(() => {
     getQuote();
     fetchImage();
     fetchWeather();
+    setAccount(AppState.account);
   }, []);
 
   async function getQuote() {
@@ -112,9 +116,15 @@ export default function HomePage() {
           <p>Loading quote...</p>
         )}
       </div>
+      {account ? (
       <div className="d-flex align-items-center justify-content-center">
         <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#todoModal">Open ToDo List</button>
-      </div>
+      </div> ) : (
+        <div className="d-flex align-items-center justify-content-center">
+          <h5 className="text-light">Login to view ToDo List</h5>
+        </div>
+      )}
+      {/* Modal for ToDo List */}
       <ToDoModal />
     </div>
   );
