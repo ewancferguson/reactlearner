@@ -11,7 +11,7 @@ export default function HomePage() {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [image, setImage] = useState<Image | null>(null);
   const [weather, setWeather] = useState<Weather | null>(null);
-  const [isCelsius, setIsCelsius] = useState(true); // <-- new state for toggle
+  const [isCelsius, setIsCelsius] = useState(true);
 
   useEffect(() => {
     getQuote();
@@ -75,6 +75,16 @@ export default function HomePage() {
           </h3>
         ) : (
           <p>Loading weather...</p>
+        )}
+      </div>
+
+      <div>
+        {weather ? (
+          <h5 className="text-center text-white text-shadow">
+            {weather.date.toLocaleDateString()}
+          </h5>
+        ) : (
+          <p>Loading weather description...</p>
         )}
       </div>
 
