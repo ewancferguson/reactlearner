@@ -46,16 +46,16 @@ function HomePage() {
 
   async function fetchWeather() {
     try {
-      const activeWeather = await weatherService.fetchWeather();
-      console.log("Fetched Weather:", activeWeather);
+      const activeWeather = await weatherService.fetchWeather()
+      console.log("Fetched Weather:", activeWeather)
       setWeather(activeWeather);
     } catch (error: any) {
-      Pop.error(error);
+      Pop.error(error)
     }
   }
 
   function toggleTemperature() {
-    setIsCelsius((prev) => !prev);
+    setIsCelsius((prev) => !prev)
   }
 
   return (
