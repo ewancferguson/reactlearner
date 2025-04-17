@@ -4,6 +4,15 @@ import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
 class ToDoService {
+  async updateToDo(id: string) {
+    const completeToDo = AppState.toDos?.find(t => t.id === id)
+    if (completeToDo) {
+      completeToDo.completed = !completeToDo.completed
+      logger.log(completeToDo, "todo updated")
+      const response = await api.put(`api/todos/${id}`, completeToDo)
+      
+    }
+  }
   addToDo(toDo : {description :string}) {
     const response = api.post('api/todos', toDo)
     logger.log(response, "todo added")
