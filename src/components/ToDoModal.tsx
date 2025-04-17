@@ -9,6 +9,9 @@ const ToDoModal = observer(() => {
   const toDos = AppState.toDos;
   const [newTodo, setNewTodo] = useState('');
 
+
+  const incompleteTodos = toDos?.filter(todo => !todo.completed) || [];
+
   useEffect(() => {
     if (AppState.account) {
       fetchToDos();
@@ -87,7 +90,9 @@ const ToDoModal = observer(() => {
                     </div>
                   </li>
                 ))}
+                <p className="fw-bold mt-4">You Have {incompleteTodos.length} Left To Do!</p>
               </ul>
+              
             ) : (
               <p>No ToDos available.</p>
             )}
