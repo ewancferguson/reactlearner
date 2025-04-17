@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import '../assets/scss/pages/HomePage.scss';
 import { observer } from "mobx-react-lite";
 import Pop from "../utils/Pop";
 import { quoteService } from "../services/QuoteService";
@@ -37,13 +38,7 @@ function HomePage() {
 
 
 
-  async function fetchToDos() {
-      try {
-        await todoService.fetchToDos();
-      } catch (error: any) {
-        Pop.error(error.message || "Failed to fetch todos.");
-      }
-    }
+  
     
   async function fetchImage() {
     try {
@@ -114,17 +109,18 @@ function HomePage() {
           <p>Loading weather date...</p>
         )}
       </div>
-      <div className="d-flex align-items-center justify-content-center text-white text-center text-shadow">
-        {quote ? (
-          <div>
-            <p className="fs-3 fw-bold">{quote.quote}</p>
-            <p className="fs-5">— {quote.author}</p>
-            <p className="fs-6 fst-italic">Source: {quote.source}</p>
-          </div>
-        ) : (
-          <p>Loading quote...</p>
-        )}
-      </div>
+      <div className="quote-container d-flex align-items-center justify-content-center text-white text-center text-shadow">
+  {quote ? (
+    <div>
+      <p className="fs-3 fw-bold selectable p-1">{quote.quote}</p>
+      <p className="fs-5 quote-author">— {quote.author}</p>
+      <p className="fs-6 fst-italic quote-source">Source: {quote.source}</p>
+    </div>
+  ) : (
+    <p>Loading quote...</p>
+  )}
+</div>
+
       {account ? (
         <div className="d-flex align-items-center justify-content-center">
           <button
