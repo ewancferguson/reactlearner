@@ -7,8 +7,9 @@ import { imageService } from "../services/ImageService";
 import { Image } from "../models/Image";
 import { weatherService } from "../services/WeatherService";
 import { Weather } from "../models/Weather";
-import { ToDoModal } from "../components/ToDoModal";
 import { AppState } from "../AppState";
+import { todoService } from "../services/ToDoService";
+import ToDoModal from "../components/ToDoModal";
 
 function HomePage() {
   const [quote, setQuote] = useState<Quote | null>(null);
@@ -34,6 +35,16 @@ function HomePage() {
     }
   }
 
+
+
+  async function fetchToDos() {
+      try {
+        await todoService.fetchToDos();
+      } catch (error: any) {
+        Pop.error(error.message || "Failed to fetch todos.");
+      }
+    }
+    
   async function fetchImage() {
     try {
       const activeImage: Image = await imageService.fetchImage();
@@ -123,7 +134,7 @@ function HomePage() {
           >
             Open ToDo List
           </button>
-          <ToDoModal />
+          <ToDoModal/>
         </div>
       ) : (
         <div className="d-flex align-items-center justify-content-center">

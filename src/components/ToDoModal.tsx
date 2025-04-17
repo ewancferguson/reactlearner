@@ -5,13 +5,15 @@ import { todoService } from "../services/ToDoService";
 import Pop from "../utils/Pop";
 import { observer } from "mobx-react";
 
-export function ToDoModal() {
+const ToDoModal = observer(() => {
   const toDos = AppState.toDos;
   const [newTodo, setNewTodo] = useState('');
 
   useEffect(() => {
-    fetchToDos();
-  }, []);
+    if (AppState.account) {
+      fetchToDos();
+    }
+  }, [AppState.account]);
 
   async function fetchToDos() {
     try {
@@ -26,7 +28,7 @@ export function ToDoModal() {
     try {
       await todoService.addToDo({ description: newTodo });
       setNewTodo('');
-      fetchToDos();
+      fetchToDos()
       Pop.success("Added todo successfully.");
     } catch (error: any) {
       Pop.error(error.message || "Failed to add todo.");
@@ -35,8 +37,8 @@ export function ToDoModal() {
 
   async function toggleToDoComplete(todo: ToDo) {
     try {
-      await todoService.updateToDo(todo.id); // No need to pass anything else
-      fetchToDos(); // Refresh list
+      await todoService.updateToDo(todo.id);
+      fetchToDos();
     } catch (error: any) {
       Pop.error(error.message || "Failed to update todo.");
     }
@@ -94,6 +96,6 @@ export function ToDoModal() {
       </div>
     </div>
   );
-}
+});
 
-export default observer(ToDoModal);
+export default ToDoModal;

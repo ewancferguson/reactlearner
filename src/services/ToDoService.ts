@@ -1,3 +1,4 @@
+import { App } from "../App"
 import { AppState } from "../AppState"
 import { ToDo } from "../models/ToDo"
 import { logger } from "../utils/Logger"
@@ -10,7 +11,7 @@ class ToDoService {
       completeToDo.completed = !completeToDo.completed
       logger.log(completeToDo, "todo updated")
       const response = await api.put(`api/todos/${id}`, completeToDo)
-      
+      AppState.toDos?.splice(AppState.toDos?.indexOf(completeToDo), 1, response.data)
     }
   }
   addToDo(toDo : {description :string}) {
