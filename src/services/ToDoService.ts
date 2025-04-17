@@ -5,6 +5,16 @@ import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
 class ToDoService {
+  async deleteToDo(todoId: string) {
+    const response = await api.delete(`api/todos/${todoId}`) 
+    const removedTodo = AppState.toDos?.find(t => t.id === todoId)
+    if (removedTodo) { 
+      const indexToRemove = AppState.toDos?.indexOf(removedTodo)
+      if (indexToRemove) {
+        AppState.toDos?.splice(indexToRemove, 1)
+      }
+    }
+  }
   async updateToDo(id: string) {
     const completeToDo = AppState.toDos?.find(t => t.id === id)
     if (completeToDo) {
@@ -14,9 +24,10 @@ class ToDoService {
       AppState.toDos?.splice(AppState.toDos?.indexOf(completeToDo), 1, response.data)
     }
   }
-  addToDo(toDo : {description :string}) {
+  async addToDo(toDo : {description :string}) {
     const response = api.post('api/todos', toDo)
     logger.log(response, "todo added")
+    
   }
   async fetchToDos() {
     const response = await api.get('api/todos')

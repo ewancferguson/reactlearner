@@ -9,7 +9,6 @@ const ToDoModal = observer(() => {
   const toDos = AppState.toDos;
   const [newTodo, setNewTodo] = useState('');
 
-
   const incompleteTodos = toDos?.filter(todo => !todo.completed) || [];
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const ToDoModal = observer(() => {
     try {
       await todoService.addToDo({ description: newTodo });
       setNewTodo('');
-      fetchToDos()
+      fetchToDos();
       Pop.success("Added todo successfully.");
     } catch (error: any) {
       Pop.error(error.message || "Failed to add todo.");
@@ -44,6 +43,16 @@ const ToDoModal = observer(() => {
       fetchToDos();
     } catch (error: any) {
       Pop.error(error.message || "Failed to update todo.");
+    }
+  }
+
+  async function deleteToDo(todoId: string) {
+    try {
+      await todoService.deleteToDo(todoId);
+      fetchToDos();
+      Pop.success("Todo deleted.");
+    } catch (error: any) {
+      Pop.error(error.message || "Failed to delete todo.");
     }
   }
 
@@ -70,7 +79,7 @@ const ToDoModal = observer(() => {
             {toDos && toDos.length > 0 ? (
               <ul className="list-group list-group-flush">
                 {toDos.map((todo) => (
-                  <li key={todo.id} className="list-group-item">
+                  <li key={todo.id} className="list-group-item d-flex justify-content-between align-items-center">
                     <div className="form-check">
                       <input
                         type="checkbox"
@@ -88,11 +97,17 @@ const ToDoModal = observer(() => {
                         {todo.description}
                       </label>
                     </div>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => deleteToDo(todo.id)}
+                      title="Delete ToDo"
+                    >
+                      🗑️
+                    </button>
                   </li>
                 ))}
                 <p className="fw-bold mt-4">You Have {incompleteTodos.length} Left To Do!</p>
               </ul>
-              
             ) : (
               <p>No ToDos available.</p>
             )}
