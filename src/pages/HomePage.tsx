@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
 import Pop from "../utils/Pop";
 import { quoteService } from "../services/QuoteService";
 import { Quote } from "../models/Quote";
@@ -8,20 +9,19 @@ import { weatherService } from "../services/WeatherService";
 import { Weather } from "../models/Weather";
 import { ToDoModal } from "../components/ToDoModal";
 import { AppState } from "../AppState";
-import { Account } from "../models/Account";
 
-export default function HomePage() {
+function HomePage() {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [image, setImage] = useState<Image | null>(null);
   const [weather, setWeather] = useState<Weather | null>(null);
-  const [account, setAccount] = useState<Account | null>(null);
   const [isCelsius, setIsCelsius] = useState(true);
+
+  const account = AppState.account;
 
   useEffect(() => {
     getQuote();
     fetchImage();
     fetchWeather();
-    setAccount(AppState.account);
   }, []);
 
   async function getQuote() {
@@ -55,7 +55,7 @@ export default function HomePage() {
   }
 
   function toggleTemperature() {
-    setIsCelsius(prev => !prev);
+    setIsCelsius((prev) => !prev);
   }
 
   return (
@@ -86,7 +86,6 @@ export default function HomePage() {
         {weather ? (
           <h5 className="text-center text-white text-shadow">
             {weather.date.toLocaleDateString()}
-            
           </h5>
         ) : (
           <p>Loading weather date...</p>
@@ -99,7 +98,6 @@ export default function HomePage() {
               hour: "2-digit",
               minute: "2-digit",
             })}
-            
           </h5>
         ) : (
           <p>Loading weather date...</p>
@@ -117,15 +115,23 @@ export default function HomePage() {
         )}
       </div>
       {account ? (
-      <div className="d-flex align-items-center justify-content-center">
-        <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#todoModal">Open ToDo List</button>
-      </div> ) : (
+        <div className="d-flex align-items-center justify-content-center">
+          <button
+            className="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#todoModal"
+          >
+            Open ToDo List
+          </button>
+          <ToDoModal />
+        </div>
+      ) : (
         <div className="d-flex align-items-center justify-content-center">
           <h5 className="text-light">Login to view ToDo List</h5>
         </div>
       )}
-      {/* Modal for ToDo List */}
-      <ToDoModal />
     </div>
   );
 }
+
+export default observer(HomePage);

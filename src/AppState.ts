@@ -3,6 +3,7 @@ import { isValidProp } from "./utils/isValidProp.ts"
 import { Account } from './models/Account.js'
 import { Identity } from '@bcwdev/auth0provider-client'
 import { Quote } from "./models/Quote.ts"
+import { ToDo } from "./models/ToDo.ts"
 
 
 class ObservableAppState {
@@ -10,6 +11,7 @@ class ObservableAppState {
   identity: Identity | null = null
   account: Account | null = null
   quote: Quote  | null = null
+  toDos: ToDo[] | null = null
   constructor() {
     makeAutoObservable(this)
   }
